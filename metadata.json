@@ -1,0 +1,6 @@
+{
+  "name": "VIBEELL - Prova e Quiz Interativo",
+  "description": "Simulado e avaliação técnica sobre o funcionamento do projeto VIBEELL (Campainha Acessível com ESP32 e Pulseira Vibratória).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
