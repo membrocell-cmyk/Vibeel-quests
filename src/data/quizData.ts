@@ -18,793 +18,1339 @@ export const PROJECT_METADATA = {
     'Pedro Luka',
   ],
   introduction:
-    'O VIBEELL transforma o sinal sonoro de uma campainha em vibrações na pulseira para que pessoas com deficiência auditiva saibam quando alguém toca a campainha.',
+    'O VIBEELL une "Vibe" (vibração) e "Bell" (campainha) para criar um ecossistema vestível de acessibilidade utilizando dois ESP32-C3 SuperMini.',
 };
 
 export const PRACTICAL_STEPS: PracticalStep[] = [
   {
     stepNumber: 1,
-    title: 'Alimentação e Recarga',
-    component: 'Bateria Li-Po + Módulo TP4056 USB-C',
-    description: 'A bateria de lítio alimenta a pulseira e é recarregada pelo cabo USB-C do celular.',
-    technicalNote: 'O módulo TP4056 evita que a bateria sofra sobrecarga.',
+    title: 'Transmissor (Campainha)',
+    component: 'ESP32-C3 SuperMini + Push Button',
+    description: 'Localizado na entrada, detecta o pressionamento do botão e envia a mensagem sem fio pela rede Wi-Fi compartilhada.',
+    technicalNote: 'Ao ligar, busca a última rede salva. Se não encontrar, abre o ponto de acesso "Vibeell".',
   },
   {
     stepNumber: 2,
-    title: 'Acionamento da Campainha',
-    component: 'Botão de Campainha (Push Button)',
-    description: 'O visitante aperta o botão na entrada da casa e o microcontrolador detecta o toque.',
-    technicalNote: 'O botão envia sinal elétrico simples para a placa da campainha.',
+    title: 'Receptor (Pulseira)',
+    component: 'ESP32-C3 SuperMini + Bateria Li-Po 3.7V + Módulo TP4056',
+    description: 'Dispositivo vestível alimentado por bateria recarregável com gerenciador de carga via USB-C.',
+    technicalNote: 'Também conecta-se à mesma rede ou abre a rede de configuração "Vibeell".',
   },
   {
     stepNumber: 3,
-    title: 'Envio Sem Fio',
-    component: 'Placas Wi-Fi (ESP32)',
-    description: 'A campainha envia uma mensagem sem fio pelo ar até a pulseira.',
-    technicalNote: 'Se a internet cair, a placa cria a rede com o nome "Vibeell".',
+    title: 'Circuito de Potência do Receptor',
+    component: 'Transistor + Resistor + Diodo + Motor Vibracall',
+    description: 'O ESP32-C3 satura a base do transistor através do resistor; o transistor conduz corrente da bateria ao motor; o diodo amortece picos indutivos.',
+    technicalNote: 'Protege a GPIO contra sobrecorrente e tensão reversa gerada pelo motor.',
   },
   {
     stepNumber: 4,
-    title: 'Vibração na Pulseira',
-    component: 'Transistor + Motor Vibratório',
-    description: 'A placa aciona o transistor, que liga o motor para tremer no braço da pessoa.',
-    technicalNote: 'O transistor serve como um interruptor liga/desliga para o motor.',
+    title: 'Rede e Portal Cativo',
+    component: 'Rede "Vibeell" + Página Web de Seleção',
+    description: 'Em caso de falha de conexão, a rede "Vibeell" exibe uma página que escaneia e lista as redes locais para configuração direta pelo usuário.',
+    technicalNote: 'Após ambos conectarem-se à mesma rede, a comunicação de disparo é instantânea.',
   },
 ];
 
 export const QUIZ_QUESTIONS: Question[] = [
-  // 1
   {
-    id: 1,
-    category: 'Acessibilidade',
-    question: 'Qual é o objetivo principal do projeto VIBEELL?',
-    options: [
-      { id: 'A', text: 'Avisar pessoas com deficiência auditiva que alguém tocou a campainha através da vibração de uma pulseira.' },
-      { id: 'B', text: 'Tocar uma música muito alta para acordar os vizinhos.' },
-      { id: 'C', text: 'Abrir o portão de casa automaticamente usando a voz.' },
-      { id: 'D', text: 'Tirar fotos automáticas de quem passa na rua.' },
+    "id": 1,
+    "category": "Projeto ETERJ",
+    "question": "Qual é a etimologia e o significado exato da palavra \"VIBEELL\" no contexto do projeto?",
+    "options": [
+      {
+        "id": "A",
+        "text": "A fusão dos termos ingleses \"Vibe\" (vibração mecânica do alerta) e \"Bell\" (campainha da residência)."
+      },
+      {
+        "id": "B",
+        "text": "A junção de \"Visual\" (alerta por luzes indicadoras) e \"Bell\" (sirene sonora de alta potência)."
+      },
+      {
+        "id": "C",
+        "text": "Uma sigla técnica que significa \"Vibration Internet Bluetooth Electronic Low Level\"."
+      },
+      {
+        "id": "D",
+        "text": "A união de \"Vibe\" (sintonizador de rádio) e \"Ell\" (abreviação de Electronic Logic Link)."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O VIBEELL foi criado para que deficientes auditivos sintam no pulso quando alguém toca a campainha.',
-    technicalTip: 'Acessibilidade por vibração no pulso.',
+    "correctAnswer": "A",
+    "explanation": "VIBEELL vem da fusão de \"Vibe\" (referindo-se ao motor vibracall) com \"Bell\" (campainha), sintetizando o conceito da campainha que vibra.",
+    "technicalTip": "VIBE (vibração) + BELL (campainha)."
   },
-  // 2
   {
-    id: 2,
-    category: 'Lógica de Acionamento',
-    question: 'Como a pessoa percebe que tem alguém chamando no portão?',
-    options: [
-      { id: 'A', text: 'Pela vibração da pulseira no seu braço.' },
-      { id: 'B', text: 'Pelo som estridente de uma buzina.' },
-      { id: 'C', text: 'Recebendo uma carta pelos correios.' },
-      { id: 'D', text: 'Por uma fumaça colorida que sai da pulseira.' },
+    "id": 2,
+    "category": "Eletrônica e Hardware",
+    "question": "Quais microcontroladores específicos foram empregados no transmissor e no receptor do projeto VIBEELL?",
+    "options": [
+      {
+        "id": "A",
+        "text": "O transmissor usa ESP32 convencional de 38 pinos e o receptor usa um microcontrolador ATmega328P sem Wi-Fi."
+      },
+      {
+        "id": "B",
+        "text": "Ambos utilizam o módulo ESP32-C3 SuperMini, tanto na campainha transmissora quanto na pulseira receptora."
+      },
+      {
+        "id": "C",
+        "text": "O transmissor usa ESP32-C3 SuperMini, mas o receptor usa uma placa Arduino Nano conectada por cabo USB."
+      },
+      {
+        "id": "D",
+        "text": "O transmissor possui apenas componentes passivos analógicos e o receptor usa um módulo ESP8266 NodeMCU."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A pulseira vibra como o vibracall de um celular avisando na hora quem está usando.',
-    technicalTip: 'Alerta tátil por vibração.',
+    "correctAnswer": "B",
+    "explanation": "O projeto padronizou o ESP32-C3 SuperMini nas duas pontas (transmissor e receptor) devido às suas dimensões ultracompactas e antena Wi-Fi integrada.",
+    "technicalTip": "ESP32-C3 SuperMini em ambos os módulos."
   },
-  // 3
   {
-    id: 3,
-    category: 'Eletrônica e Hardware',
-    question: 'Qual componente da pulseira faz ela tremer (vibrar) no braço?',
-    options: [
-      { id: 'A', text: 'Motor vibratório (Vibracall).' },
-      { id: 'B', text: 'Uma lâmpada incandescente.' },
-      { id: 'C', text: 'Um alto-falante potente.' },
-      { id: 'D', text: 'Uma ventoinha de computador.' },
+    "id": 3,
+    "category": "Eletrônica e Hardware",
+    "question": "Quais componentes eletrônicos compõem estritamente o circuito da unidade Transmissora (campainha)?",
+    "options": [
+      {
+        "id": "A",
+        "text": "ESP32-C3 SuperMini, Push Button, Motor Vibracall e módulo de carga TP4056."
+      },
+      {
+        "id": "B",
+        "text": "ESP32-C3 SuperMini, Push Button, transistor NPN e bateria Li-Po de 3,7V."
+      },
+      {
+        "id": "C",
+        "text": "Exclusivamente a placa ESP32-C3 SuperMini e o Push Button (botão de pressão)."
+      },
+      {
+        "id": "D",
+        "text": "ESP32-C3 SuperMini, resistor de base, diodo flyback e Push Button."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O motor vibracall é o mesmo tipo de pecinha que faz os celulares vibrarem.',
-    technicalTip: 'Motor Vibracall gera o tremor.',
+    "correctAnswer": "C",
+    "explanation": "A campainha transmissora é composta de forma enxuta apenas pelo ESP32-C3 SuperMini e pelo Push Button conectado à sua entrada digital.",
+    "technicalTip": "Transmissor = ESP32-C3 SuperMini + Push Button."
   },
-  // 4
   {
-    id: 4,
-    category: 'Eletrônica e Hardware',
-    question: 'Onde o visitante aperta para tocar a campainha?',
-    options: [
-      { id: 'A', text: 'No botão (Push Button) instalado na entrada ou portão da casa.' },
-      { id: 'B', text: 'Na tela do micro-ondas da cozinha.' },
-      { id: 'C', text: 'Diretamente na pulseira que está no braço do morador.' },
-      { id: 'D', text: 'No roteador de internet da sala.' },
+    "id": 4,
+    "category": "Eletrônica e Hardware",
+    "question": "Quais componentes eletrônicos compõem estritamente a unidade Receptora (pulseira vestível)?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Bateria Li-Po 3,7V, ESP32-C3 SuperMini, Push Button, Diodo e Motor Vibracall, sem necessidade de transistor."
+      },
+      {
+        "id": "B",
+        "text": "ESP32-C3 SuperMini, Módulo TP4056, Buzzer piezoelétrico sonoro, Resistor e Pilha alcalina AA."
+      },
+      {
+        "id": "C",
+        "text": "Bateria Li-Po 3,7V, dois Push Buttons, Módulo TP4056, Motor Vibracall e regulador 7805 de 5V."
+      },
+      {
+        "id": "D",
+        "text": "Bateria Li-Po 3,7V, ESP32-C3 SuperMini, Módulo de carregamento TP4056, Motor Vibracall, Resistor, Diodo e Transistor."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O botão de campainha fica na porta ou portão para o visitante apertar com o dedo.',
-    technicalTip: 'Botão de entrada (Push Button).',
+    "correctAnswer": "D",
+    "explanation": "O receptor possui 7 elementos: Bateria Li-Po 3,7V, ESP32-C3 SuperMini, TP4056, Motor Vibracall, Resistor, Diodo e Transistor.",
+    "technicalTip": "Receptor: Bateria Li-Po + ESP32-C3 + TP4056 + Motor + Resistor + Diodo + Transistor."
   },
-  // 5
   {
-    id: 5,
-    category: 'Conectividade Wi-Fi',
-    question: 'Como a campainha da porta avisa a pulseira sem usar nenhum fio atravessando a casa?',
-    options: [
-      { id: 'A', text: 'Usando comunicação sem fio (Wi-Fi).' },
-      { id: 'B', text: 'Por um cano de água embaixo do piso.' },
-      { id: 'C', text: 'Com um barbante amarrado na maçaneta.' },
-      { id: 'D', text: 'Por um espelho refletindo a luz do sol.' },
+    "id": 5,
+    "category": "Conectividade Wi-Fi",
+    "question": "Qual é o comportamento inicial exato dos ESP32-C3 (campainha e pulseira) imediatamente após serem energizados?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Tentam se reconectar automaticamente à última rede Wi-Fi gravada na memória; se não a localizarem, criam a rede \"Vibeell\"."
+      },
+      {
+        "id": "B",
+        "text": "Apagam imediatamente a memória e entram no modo de ponto de acesso \"Vibeell\" obrigatoriamente a cada inicialização."
+      },
+      {
+        "id": "C",
+        "text": "Conectam-se automaticamente a qualquer roteador aberto na vizinhança sem exigir nenhuma senha."
+      },
+      {
+        "id": "D",
+        "text": "Disparam uma vibração contínua de 1 minuto até que o usuário pressione o Push Button do transmissor."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O sinal viaja pelo ar através de ondas de rádio Wi-Fi entre as duas placas.',
-    technicalTip: 'Comunicação sem fio Wi-Fi.',
+    "correctAnswer": "A",
+    "explanation": "Os módulos tentam primeiro restabelecer conexão com a rede conhecida. Caso não haja resposta do roteador, sobem a rede \"Vibeell\" com portal cativo.",
+    "technicalTip": "Busca última rede salva -> Se falhar, gera AP \"Vibeell\"."
   },
-  // 6
   {
-    id: 6,
-    category: 'Eletrônica e Hardware',
-    question: 'Qual peça fornece energia portátil para a pulseira funcionar fora da tomada?',
-    options: [
-      { id: 'A', text: 'Uma bateria recarregável de lítio (Li-Po).' },
-      { id: 'B', text: 'Uma usina geradora de gasolina.' },
-      { id: 'C', text: 'Um cabo ligado direto no poste da rua.' },
-      { id: 'D', text: 'Uma pilha gigante de caminhão de 24V.' },
+    "id": 6,
+    "category": "Conectividade Wi-Fi",
+    "question": "Quando um usuário conecta seu smartphone à rede local \"Vibeell\" criada pelo dispositivo, o que a interface exibe?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Uma tela solicitando pagamento de licença de uso do software para liberar o sinal."
+      },
+      {
+        "id": "B",
+        "text": "Uma página de configuração com a lista de redes Wi-Fi locais escaneadas no ambiente, permitindo selecionar uma e inserir sua senha."
+      },
+      {
+        "id": "C",
+        "text": "Um terminal de comando Linux onde é necessário digitar códigos em linguagem C para calibrar os pinos."
+      },
+      {
+        "id": "D",
+        "text": "Uma lista com o histórico de áudios de quem tocou a campainha nos últimos dias."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A bateria de lítio é pequena, leve e recarregável, perfeita para usar no pulso.',
-    technicalTip: 'Bateria Li-Po pequena e recarregável.',
+    "correctAnswer": "B",
+    "explanation": "A rede configurável abre uma página web com o escaneamento das redes próximas, facilitando selecionar o SSID residencial e digitar a senha.",
+    "technicalTip": "Portal cativo: escaneia redes e permite selecionar e autenticar."
   },
-  // 7
   {
-    id: 7,
-    category: 'Eletrônica e Hardware',
-    question: 'Como o usuário recarrega a bateria da pulseira quando ela fica fraca?',
-    options: [
-      { id: 'A', text: 'Conectando um cabo USB-C (igual ao carregador de celular comum).' },
-      { id: 'B', text: 'Colocando a pulseira no forno quente.' },
-      { id: 'C', text: 'Jogando a pulseira dentro da água com sal.' },
-      { id: 'D', text: 'Trocando a pulseira inteira por uma nova descartável.' },
+    "id": 7,
+    "category": "Conectividade Wi-Fi",
+    "question": "Para que a campainha consiga acionar a pulseira vibratória com sucesso, qual condição de rede é obrigatória?",
+    "options": [
+      {
+        "id": "A",
+        "text": "O transmissor deve estar conectado ao Wi-Fi residencial, mas a pulseira deve estar conectada à rede de dados 4G/5G móvel."
+      },
+      {
+        "id": "B",
+        "text": "A pulseira deve estar operando como roteador principal da casa fornecendo internet para o transmissor e computadores."
+      },
+      {
+        "id": "C",
+        "text": "Ambos os dispositivos (transmissor e receptor) precisam estar conectados à mesma rede Wi-Fi local compartilhada."
+      },
+      {
+        "id": "D",
+        "text": "O transmissor e a pulseira precisam estar pareados via Bluetooth Classic de longo alcance sem suporte a Wi-Fi."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A pulseira tem entrada USB-C compatível com qualquer carregador moderno de celular.',
-    technicalTip: 'Conector USB-C para recarga prática.',
+    "correctAnswer": "C",
+    "explanation": "Para trocar pacotes de disparo diretamente, a campainha e a pulseira devem estar registradas na mesma rede local (LAN).",
+    "technicalTip": "Transmissor e receptor sintonizados na mesma rede local."
   },
-  // 8
   {
-    id: 8,
-    category: 'Eletrônica e Hardware',
-    question: 'Qual placa inteligente funciona como o "cérebro" na pulseira?',
-    options: [
-      { id: 'A', text: 'A plaquinha ESP32-C3, que é bem pequena e tem Wi-Fi.' },
-      { id: 'B', text: 'Um computador de mesa com monitor e teclado.' },
-      { id: 'C', text: 'Um rádio relógio de cabeceira.' },
-      { id: 'D', text: 'Uma calculadora comum de pilha.' },
+    "id": 8,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual é a finalidade técnica específica do Diodo montado na unidade receptora (pulseira)?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Emitir luz ultravioleta visível para alertar o usuário quando a bateria estiver acabando."
+      },
+      {
+        "id": "B",
+        "text": "Retificar a corrente alternada de 110V/220V que entra pelo cabo USB-C da pulseira."
+      },
+      {
+        "id": "C",
+        "text": "Impedir que a memória do ESP32-C3 perca as perguntas da prova."
+      },
+      {
+        "id": "D",
+        "text": "Atuar como diodo de roda-livre (flyback), dissipando picos de tensão reversa induzidos pela bobina do motor ao desligar."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O ESP32-C3 é um chip bem pequeno com antena que recebe a ordem de vibrar.',
-    technicalTip: 'ESP32-C3: compacto para pulseira.',
+    "correctAnswer": "D",
+    "explanation": "Motores DC possuem enrolamentos indutivos. Ao cortar a corrente, a indução gera alta tensão reversa; o diodo em antiparalelo protege o transistor.",
+    "technicalTip": "Diodo de Flyback / Roda-livre: proteção contra força contra-eletromotriz indutiva."
   },
-  // 9
   {
-    id: 9,
-    category: 'Eletrônica e Hardware',
-    question: 'Para que serve o transistor no circuito da pulseira?',
-    options: [
-      { id: 'A', text: 'Funciona como um interruptor que liga e desliga o motor vibratório com segurança.' },
-      { id: 'B', text: 'Serve para tocar rádio FM com música.' },
-      { id: 'C', text: 'Serve para deixar a pulseira com uma cor diferente.' },
-      { id: 'D', text: 'Serve para esfriar o braço da pessoa no calor.' },
+    "id": 9,
+    "category": "Eletrônica e Hardware",
+    "question": "Por que o Transistor é indispensável no receptor, em vez de ligar o motor Vibracall diretamente no pino da placa?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Porque o motor exige corrente (60 a 100mA+) superior ao limite seguro do pino GPIO do ESP32-C3 (~20mA), evitando queimar a porta."
+      },
+      {
+        "id": "B",
+        "text": "Porque a GPIO fornece tensão alternada (AC) e o motor Vibracall só aceita corrente contínua pura (DC)."
+      },
+      {
+        "id": "C",
+        "text": "Porque a placa ESP32-C3 não possui pinos digitais de saída, apenas entradas analógicas."
+      },
+      {
+        "id": "D",
+        "text": "Porque o transistor converte comandos de voz em impulsos elétricos mecânicos."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O transistor recebe a ordem da plaquinha e deixa a corrente passar para ligar o motor.',
-    technicalTip: 'Transistor = interruptor eletrônico para o motor.',
+    "correctAnswer": "A",
+    "explanation": "O transistor atua como chave de potência. O pino do ESP32 fornece apenas uma corrente minúscula de controle para saturar a base do transistor.",
+    "technicalTip": "Transistor evita a destruição do pino GPIO por sobrecorrente."
   },
-  // 10
   {
-    id: 10,
-    category: 'Eletrônica e Hardware',
-    question: 'Por que o motor vibratório não é ligado direto no pino da plaquinha ESP32?',
-    options: [
-      { id: 'A', text: 'Porque o motor precisa de mais corrente elétrica e poderia queimar o pino da placa.' },
-      { id: 'B', text: 'Porque o pino da placa é feito de borracha isolante.' },
-      { id: 'C', text: 'Porque o motor só funciona se estiver desconectado de tudo.' },
-      { id: 'D', text: 'Porque a placa tem medo de motores que tremem.' },
+    "id": 10,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual é o papel do Resistor conectado entre a saída do ESP32-C3 SuperMini e a base do Transistor?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Aumentar a velocidade do motor Vibracall elevando a tensão da bateria para 12 volts."
+      },
+      {
+        "id": "B",
+        "text": "Limitar a corrente que sai do pino GPIO para a junção base-emissor, protegendo a saída digital e polarizando o transistor."
+      },
+      {
+        "id": "C",
+        "text": "Filtrar ruídos de radiofrequência da antena Wi-Fi do ESP32-C3."
+      },
+      {
+        "id": "D",
+        "text": "Descarregar a bateria Li-Po rapidamente quando o motor for desligado."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O motor puxa mais energia do que a plaquinha aguenta dar sozinha, por isso usamos o transistor.',
-    technicalTip: 'Proteção: o motor consome muita corrente.',
+    "correctAnswer": "B",
+    "explanation": "A junção base-emissor age como um diodo condutor (~0.7V). Sem o resistor limitador de base, a GPIO ficaria em curto com o GND, queimando o microcontrolador.",
+    "technicalTip": "Resistor de base: limitador de corrente da GPIO."
   },
-
-  // 11
   {
-    id: 11,
-    category: 'Eletrônica e Hardware',
-    question: 'Qual módulo é responsável por carregar a bateria da pulseira com segurança?',
-    options: [
-      { id: 'A', text: 'Módulo carregador TP4056.' },
-      { id: 'B', text: 'Sensor de impressão digital.' },
-      { id: 'C', text: 'Câmera fotográfica com flash.' },
-      { id: 'D', text: 'Antena de televisão analógica.' },
+    "id": 11,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual é a função exata do módulo TP4056 na pulseira receptora?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Converter o sinal Wi-Fi em vibração mecânica sem passar pela programação do microcontrolador."
+      },
+      {
+        "id": "B",
+        "text": "Funcionar como receptor de rádio AM/FM de emergência para a pulseira."
+      },
+      {
+        "id": "C",
+        "text": "Controlar o ciclo de recarga da bateria Li-Po (corrente e tensão constantes) e proteger contra sobrecarga via entrada USB-C."
+      },
+      {
+        "id": "D",
+        "text": "Gerar o pulso de 220V que alimenta o motor Vibracall."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O TP4056 controla a quantidade certa de energia para não estragar nem esquentar a bateria.',
-    technicalTip: 'Módulo TP4056: gerenciador de carga.',
+    "correctAnswer": "C",
+    "explanation": "O TP4056 gerencia a carga da bateria de polímero de lítio com perfil CC/CV, garantindo corte seguro em 4,2V.",
+    "technicalTip": "TP4056: gerenciamento de carga segura de bateria Li-Po."
   },
-  // 12
   {
-    id: 12,
-    category: 'Conectividade Wi-Fi',
-    question: 'Se a pulseira não encontrar o Wi-Fi da casa, qual nome de rede ela cria para você conectar pelo celular?',
-    options: [
-      { id: 'A', text: '"Vibeell"' },
-      { id: 'B', text: '"Internet_Gratis_Vizinho"' },
-      { id: 'C', text: '"Campainha_Estragada"' },
-      { id: 'D', text: '"Rede_Secreta_123"' },
+    "id": 12,
+    "category": "Eletrônica e Hardware",
+    "question": "Por que a bateria Li-Po de 3,7V foi a fonte de alimentação escolhida para o receptor, e não pilhas convencionais?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Porque pilhas comuns são proibidas em dispositivos que utilizem microcontroladores da família ESP32."
+      },
+      {
+        "id": "B",
+        "text": "Porque baterias Li-Po fornecem corrente alternada de 60 Hz compatível com o motor."
+      },
+      {
+        "id": "C",
+        "text": "Porque baterias de lítio nunca descarregam, dispensando recargas ao longo dos anos."
+      },
+      {
+        "id": "D",
+        "text": "Por aliar alta densidade energética com formato ultrafino, baixo peso e capacidade de recarga contínua para uso vestível."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Ela gera uma rede própria chamada "Vibeell" para você entrar e colocar a senha do seu Wi-Fi.',
-    technicalTip: 'Nome da rede: "Vibeell".',
+    "correctAnswer": "D",
+    "explanation": "Baterias Li-Po são leves e planas, ideais para pulseiras vestíveis onde peso e espessura afetam diretamente o conforto.",
+    "technicalTip": "Li-Po 3.7V: formato compacto, recarregável e leve."
   },
-  // 13
   {
-    id: 13,
-    category: 'Conectividade Wi-Fi',
-    question: 'Como você coloca a senha do Wi-Fi de casa na campainha?',
-    options: [
-      { id: 'A', text: 'Conectando o celular na rede "Vibeell", que abre uma página simples para digitar a senha.' },
-      { id: 'B', text: 'Gritando a senha perto da campainha.' },
-      { id: 'C', text: 'Escrevendo a senha com caneta permanente na bateria.' },
-      { id: 'D', text: 'Levando a campainha até a assistência técnica toda vez.' },
+    "id": 13,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual é o princípio de funcionamento do Motor Vibracall empregado no projeto VIBEELL?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Possui uma massa excêntrica (desbalanceada) acoplada ao eixo rotativo que, ao girar em alta rotação, gera oscilação mecânica."
+      },
+      {
+        "id": "B",
+        "text": "Emite descargas elétricas controladas de alta voltagem diretamente sobre a derme do pulso."
+      },
+      {
+        "id": "C",
+        "text": "Produz ondas sonoras ultrassônicas que ressoam na caixa plástica sem nenhum componente em movimento."
+      },
+      {
+        "id": "D",
+        "text": "Opera por expansão e contração térmica instantânea de um filamento metálico aquecido."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Abre uma página no navegador do celular (portal cativo) onde você escolhe a rede e digita a senha.',
-    technicalTip: 'Portal cativo: configuração fácil no celular.',
+    "correctAnswer": "A",
+    "explanation": "O motor ERM (Eccentric Rotating Mass) possui um pequeno peso fora de centro que gera força centrífuga oscilante durante a rotação.",
+    "technicalTip": "Vibracall ERM: rotação de peso excêntrico desbalanceado."
   },
-  // 14
   {
-    id: 14,
-    category: 'Acessibilidade',
-    question: 'Por que uma campainha que apenas acende uma luz na sala pode não ser suficiente para um surdo?',
-    options: [
-      { id: 'A', text: 'Porque se ele estiver no quarto, de costas ou dormindo, ele não vai ver a luz acendendo.' },
-      { id: 'B', text: 'Porque pessoas surdas não conseguem enxergar cores.' },
-      { id: 'C', text: 'Porque lâmpadas queimam sempre que alguém aperta a campainha.' },
-      { id: 'D', text: 'Porque lâmpadas gastam mais luz que uma fábrica inteira.' },
+    "id": 14,
+    "category": "Eletrônica e Hardware",
+    "question": "O que diferencia a montagem física do Transmissor em relação ao Receptor no VIBEELL?",
+    "options": [
+      {
+        "id": "A",
+        "text": "O transmissor possui motor vibratório próprio para confirmar ao visitante que o botão foi clicado."
+      },
+      {
+        "id": "B",
+        "text": "O transmissor é estático na porta (ESP32-C3 + botão), enquanto o receptor é portátil e vestível com bateria e circuito do motor."
+      },
+      {
+        "id": "C",
+        "text": "O receptor fica fixado na parede da sala com fios ligados ao transmissor do portão."
+      },
+      {
+        "id": "D",
+        "text": "O transmissor utiliza bateria Li-Po e o receptor fica ligado diretamente na tomada por um cabo de 10 metros."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A luz só funciona se a pessoa estiver olhando para ela; já a pulseira vibra direto no corpo.',
-    technicalTip: 'Vantagem da pulseira: acompanha o morador onde ele estiver.',
+    "correctAnswer": "B",
+    "explanation": "O transmissor é a campainha fixa na entrada (apenas ESP32-C3 e botão); o receptor é a pulseira móvel no braço do morador.",
+    "technicalTip": "Transmissor fixo (porta) vs Receptor vestível portátil (pulso)."
   },
-  // 15
   {
-    id: 15,
-    category: 'Lógica de Acionamento',
-    question: 'A pulseira fica vibrando o tempo todo sem parar?',
-    options: [
-      { id: 'A', text: 'Não, ela só vibra por cerca de 1 a 2 segundos quando alguém aperta o botão da campainha.' },
-      { id: 'B', text: 'Sim, fica vibrando 24 horas por dia até descarregar.' },
-      { id: 'C', text: 'Não, ela só vibra quando acaba a energia elétrica do bairro.' },
-      { id: 'D', text: 'Sim, mas só vibra aos sábados e domingos.' },
+    "id": 15,
+    "category": "Lógica de Acionamento",
+    "question": "Qual é a sequência exata de eventos no circuito elétrico do receptor quando a ordem de vibrar é recebida via Wi-Fi?",
+    "options": [
+      {
+        "id": "A",
+        "text": "GPIO vai para nível BAIXO -> O diodo descarrega a bateria -> O motor liga por indução magnética do ar."
+      },
+      {
+        "id": "B",
+        "text": "O módulo TP4056 corta a energia -> O transistor desliga -> O motor vibra utilizando a energia do resistor."
+      },
+      {
+        "id": "C",
+        "text": "GPIO do ESP32-C3 vai para nível ALTO -> Corrente flui pelo resistor para a base do transistor -> Transistor satura -> Motor conduz corrente da bateria e vibra."
+      },
+      {
+        "id": "D",
+        "text": "O Push Button fecha contato na pulseira -> A bateria manda 220V para a GPIO -> O motor gira no sentido anti-horário."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Ela só dá um aviso rápido no pulso quando alguém toca, economizando a bateria.',
-    technicalTip: 'Vibração sob demanda para poupar bateria.',
+    "correctAnswer": "C",
+    "explanation": "A GPIO envia nível ALTO (HIGH), injetando corrente na base através do resistor, saturando o transistor que liga o motor à alimentação da bateria.",
+    "technicalTip": "HIGH na GPIO -> Base saturada -> Chave fecha -> Motor acionado."
   },
-  // 16
   {
-    id: 16,
-    category: 'Eletrônica e Hardware',
-    question: 'Para que serve a pecinha chamada "Resistor" que fica antes do transistor?',
-    options: [
-      { id: 'A', text: 'Para diminuir a corrente que sai da placa e não queimar nada.' },
-      { id: 'B', text: 'Para aumentar o som da campainha.' },
-      { id: 'C', text: 'Para iluminar a pulseira no escuro.' },
-      { id: 'D', text: 'Para guardar fotos dos visitantes.' },
+    "id": 16,
+    "category": "Eletrônica e Hardware",
+    "question": "Como o Diodo está conectado em relação ao Motor Vibracall no circuito da pulseira?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Em série entre a bateria e a entrada de energia do ESP32-C3 para reduzir a tensão em 5V."
+      },
+      {
+        "id": "B",
+        "text": "Diretamente entre o pino do Push Button e a antena Wi-Fi do transmissor."
+      },
+      {
+        "id": "C",
+        "text": "Em paralelo com o resistor de base para dobrar a corrente do pino GPIO."
+      },
+      {
+        "id": "D",
+        "text": "Em paralelo reverso (antiparalelo) com os terminais do motor, com o cátodo voltado para o polo positivo da alimentação."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O resistor serve como um freio na corrente elétrica, protegendo a plaquinha.',
-    technicalTip: 'Resistor: limita a corrente de proteção.',
+    "correctAnswer": "D",
+    "explanation": "O diodo flyback fica em paralelo com a carga indutiva (catodo no positivo, anodo no coletor do transistor) para conduzir apenas no pico reverso.",
+    "technicalTip": "Diodo antiparalelo com o motor (catodo no VCC)."
   },
-  // 17
   {
-    id: 17,
-    category: 'Eletrônica e Hardware',
-    question: 'Qual é o formato do motor vibratório usado na pulseira?',
-    options: [
-      { id: 'A', text: 'Pequeno e achatado como uma moedinha de relógio.' },
-      { id: 'B', text: 'Grande como o motor de uma geladeira.' },
-      { id: 'C', text: 'Com duas hélices girando do lado de fora.' },
-      { id: 'D', text: 'Quadrado e pesado como um tijolo.' },
+    "id": 17,
+    "category": "Lógica de Acionamento",
+    "question": "O que ocorre no circuito do receptor no exato instante em que o pino GPIO do ESP32-C3 retorna para nível BAIXO (LOW / 0V)?",
+    "options": [
+      {
+        "id": "A",
+        "text": "A corrente de base cessa, o transistor entra em corte (chave aberta), o motor desliga e a tensão indutiva reversa é absorvida pelo diodo."
+      },
+      {
+        "id": "B",
+        "text": "O transistor entra em curto proposital e descarrega a bateria Li-Po para esfriar o circuito."
+      },
+      {
+        "id": "C",
+        "text": "O motor inverte a rotação imediatamente e devolve energia para a rede Wi-Fi residencial."
+      },
+      {
+        "id": "D",
+        "text": "A plaquinha perde a programação gravada na memória e precisa ser regravada via USB."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O motor tipo moeda é fininho para caber confortavelmente dentro de uma pulseira no pulso.',
-    technicalTip: 'Motor tipo moeda: ultrafino e confortável.',
+    "correctAnswer": "A",
+    "explanation": "Sem corrente de base o transistor corta; a bobina do motor tenta manter a corrente gerando pico reverso, que é safely conduzido pelo diodo.",
+    "technicalTip": "Corte do transistor + absorção da FEM induzida pelo diodo."
   },
-  // 18
   {
-    id: 18,
-    category: 'Projeto ETERJ',
-    question: 'De qual escola e turma são os alunos que criaram o projeto VIBEELL?',
-    options: [
-      { id: 'A', text: 'ETERJ - Escola Técnica do Rio de Janeiro, Turma 1121.' },
-      { id: 'B', text: 'Colégio Pedro II, Turma 3001.' },
-      { id: 'C', text: 'Escola Municipal Monteiro Lobato, 5º ano.' },
-      { id: 'D', text: 'Universidade de Oxford, Turma de Medicina.' },
+    "id": 18,
+    "category": "Conectividade Wi-Fi",
+    "question": "Por que o VIBEELL cria a rede \"Vibeell\" como uma rede configurável quando não localiza a rede anterior?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Para fornecer sinal de internet banda larga gratuito e ilimitado para qualquer pessoa na vizinhança."
+      },
+      {
+        "id": "B",
+        "text": "Para evitar que o usuário precise reprogramar os chips via código fonte em computador caso mude de casa ou troque o roteador."
+      },
+      {
+        "id": "C",
+        "text": "Para bloquear o sinal de celulares próximos e evitar interferências na campainha."
+      },
+      {
+        "id": "D",
+        "text": "Porque o ESP32-C3 SuperMini não tem capacidade de gravar senhas na memória não volátil."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O projeto foi desenvolvido pelos alunos do 1º ano da turma 1121 da ETERJ.',
-    technicalTip: 'ETERJ - Turma 1121.',
+    "correctAnswer": "B",
+    "explanation": "A rede e o portal cativo tornam o produto independente e acessível, permitindo reconfigurar o Wi-Fi facilmente por qualquer celular.",
+    "technicalTip": "Independência de compilação: reconfiguração prática pelo usuário."
   },
-  // 19
   {
-    id: 19,
-    category: 'Projeto ETERJ',
-    question: 'Quem é a professora orientadora do projeto VIBEELL?',
-    options: [
-      { id: 'A', text: 'Professora Tacila Vanessa.' },
-      { id: 'B', text: 'Professora Marta Silva.' },
-      { id: 'C', text: 'Professora Ana Maria Braga.' },
-      { id: 'D', text: 'Professora Clarice Lispector.' },
+    "id": 19,
+    "category": "Lógica de Acionamento",
+    "question": "Qual é o papel do Push Button no transmissor do ponto de vista de sinal elétrico?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Gerar a energia necessária para alimentar o rádio Wi-Fi do ESP32-C3 por efeito piezoelétrico sem eletricidade."
+      },
+      {
+        "id": "B",
+        "text": "Chavear diretamente a corrente do motor Vibracall através de um fio que atravessa a rua."
+      },
+      {
+        "id": "C",
+        "text": "Alterar momentaneamente o nível lógico do pino GPIO (gerando uma transição de estado que dispara o pacote de rede)."
+      },
+      {
+        "id": "D",
+        "text": "Apagar a memória flash do transmissor sempre que for pressionado com força."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A orientação dos alunos foi feita pela Professora Tacila Vanessa.',
-    technicalTip: 'Orientadora: Professora Tacila Vanessa.',
+    "correctAnswer": "C",
+    "explanation": "O botão é uma entrada digital simples; ao pressionar, a GPIO lê a variação (ex: de HIGH para LOW ou vice-versa) e envia o pacote.",
+    "technicalTip": "Entrada digital de evento momentâneo."
   },
-  // 20
   {
-    id: 20,
-    category: 'Eletrônica e Hardware',
-    question: 'No módulo carregador TP4056, o que significa a luzinha vermelha acesa?',
-    options: [
-      { id: 'A', text: 'Que a bateria está sendo carregada no momento.' },
-      { id: 'B', text: 'Que a bateria pegou fogo.' },
-      { id: 'C', text: 'Que a campainha estragou para sempre.' },
-      { id: 'D', text: 'Que alguém tocou a campainha.' },
+    "id": 20,
+    "category": "Eletrônica e Hardware",
+    "question": "Se retirássemos o Resistor de Base e ligássemos o pino GPIO do ESP32-C3 direto na base do transistor, o que aconteceria?",
+    "options": [
+      {
+        "id": "A",
+        "text": "O motor Vibracall funcionaria com o dobro da rotação sem nenhum risco ao circuito."
+      },
+      {
+        "id": "B",
+        "text": "A bateria Li-Po explodiria instantaneamente ao ser conectada."
+      },
+      {
+        "id": "C",
+        "text": "A rede Wi-Fi \"Vibeell\" ficaria com alcance 10 vezes maior."
+      },
+      {
+        "id": "D",
+        "text": "A corrente drenada da GPIO excederia o limite máximo permitido pelo chip, podendo danificar permanentemente a saída da placa."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Luz vermelha acesa no TP4056 significa que o cabo está conectado e a bateria está recebendo carga.',
-    technicalTip: 'LED Vermelho = Carregando.',
+    "correctAnswer": "D",
+    "explanation": "A junção base-emissor de um transistor bipolar em polarização direta tem queda de tensão de ~0.7V. Sem resistor, a GPIO fica em quase curto com o terra.",
+    "technicalTip": "Risco de queima da GPIO por corrente excessiva sem resistor de base."
   },
-
-  // 21
   {
-    id: 21,
-    category: 'Eletrônica e Hardware',
-    question: 'E o que significa quando a luzinha do carregador fica azul (ou verde)?',
-    options: [
-      { id: 'A', text: 'Que a bateria já está 100% carregada e pronta para uso.' },
-      { id: 'B', text: 'Que a bateria está vazia.' },
-      { id: 'C', text: 'Que o Wi-Fi desconectou.' },
-      { id: 'D', text: 'Que o botão da campainha quebrou.' },
+    "id": 21,
+    "category": "Eletrônica e Hardware",
+    "question": "Se retirássemos o Diodo de roda-livre em paralelo com o motor, qual componente correria risco direto de queima e por quê?",
+    "options": [
+      {
+        "id": "A",
+        "text": "O Transistor, devido ao pico de alta tensão reversa gerado pela indutância da bobina do motor no momento do desligamento."
+      },
+      {
+        "id": "B",
+        "text": "O Push Button da campainha, devido ao calor que voltaria pela rede Wi-Fi."
+      },
+      {
+        "id": "C",
+        "text": "O módulo TP4056, pois perderia a calibragem do conector USB-C."
+      },
+      {
+        "id": "D",
+        "text": "Apenas a carcaça plástica da pulseira por desmagnetização molecular."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Luz azul ou verde indica fim da carga; já pode retirar do carregador.',
-    technicalTip: 'LED Azul/Verde = Carga Completa.',
+    "correctAnswer": "A",
+    "explanation": "Cargas indutivas geram picos de tensão reversa de dezenas de volts ao serem cortadas (V = L * di/dt), superando a tensão de ruptura do transistor (Vce).",
+    "technicalTip": "Transistor corre risco de queima por sobretensão indutiva sem o diodo."
   },
-  // 22
   {
-    id: 22,
-    category: 'Lógica de Acionamento',
-    question: 'O que o botão da campainha faz exatamente quando é apertado?',
-    options: [
-      { id: 'A', text: 'Encosta dois contatos metálicos fechando o circuito para a plaquinha saber que foi apertado.' },
-      { id: 'B', text: 'Dispara um jato de água na mão do visitante.' },
-      { id: 'C', text: 'Desliga a lâmpada da rua.' },
-      { id: 'D', text: 'Esquenta o portão.' },
+    "id": 22,
+    "category": "Acessibilidade",
+    "question": "Em que aspectos a pulseira VIBEELL supera sistemas residenciais baseados apenas em sinalizadores luminosos?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Consome 10 vezes mais energia que uma lâmpada estroboscópica, aquecendo o braço do morador."
+      },
+      {
+        "id": "B",
+        "text": "Garante o alerta independente de onde o usuário esteja e da sua linha de visão, inclusive com olhos fechados ou em outro cômodo."
+      },
+      {
+        "id": "C",
+        "text": "Emite um som agudo simultâneo que substitui o uso da vibração mecânica."
+      },
+      {
+        "id": "D",
+        "text": "Exige que o morador fique posicionado a menos de 50 centímetros da campainha para receber o alerta."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O botão é uma chave simples que fecha o contato elétrico por um instante.',
-    technicalTip: 'Push button fecha contato momentâneo.',
+    "correctAnswer": "B",
+    "explanation": "Avisos luminosos exigem atenção visual e dependem de a pessoa estar no cômodo correto. O alerta tátil vestível acompanha o indivíduo.",
+    "technicalTip": "Vantagem do alerta tátil vestível sobre o alerta óptico ambiental."
   },
-  // 23
   {
-    id: 23,
-    category: 'Eletrônica e Hardware',
-    question: 'Qual é a vantagem da bateria Li-Po ser tão fininha e maleável?',
-    options: [
-      { id: 'A', text: 'Facilita colocar dentro da caixinha da pulseira sem ficar pesada no braço.' },
-      { id: 'B', text: 'Permite dobrar ao meio como se fosse papel sulfite.' },
-      { id: 'C', text: 'Faz a bateria nunca precisar de recarga.' },
-      { id: 'D', text: 'Faz a pulseira brilhar no escuro.' },
+    "id": 23,
+    "category": "Conectividade Wi-Fi",
+    "question": "O que o usuário visualiza no navegador ao se conectar ao ponto de acesso \"Vibeell\" gerado pelo dispositivo?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Uma tela preta sem nenhuma informação, sendo necessário aguardar 2 horas para inicializar."
+      },
+      {
+        "id": "B",
+        "text": "O manual de instruções em PDF da fabricante do módulo TP4056."
+      },
+      {
+        "id": "C",
+        "text": "Uma página web que lista os nomes (SSIDs) das redes Wi-Fi locais detectadas, com campo para digitar a senha da rede escolhida."
+      },
+      {
+        "id": "D",
+        "text": "Um formulário solicitando cartão de crédito para liberar o uso da campainha."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Baterias finas de lítio são perfeitas para coisas que usamos no corpo (wearables).',
-    technicalTip: 'Formato compacto para wearables.',
+    "correctAnswer": "C",
+    "explanation": "O portal cativo apresenta o escaneamento ativo das redes Wi-Fi da residência para que o usuário clique na sua rede e insira as credenciais.",
+    "technicalTip": "Portal de configuração: lista redes escaneadas e recebe a senha."
   },
-  // 24
   {
-    id: 24,
-    category: 'Acessibilidade',
-    question: 'O que significa dizer que o VIBEELL é um dispositivo "Wearable"?',
-    options: [
-      { id: 'A', text: 'Que é uma tecnologia vestível, ou seja, feita para ser usada no corpo como uma pulseira ou relógio.' },
-      { id: 'B', text: 'Que só funciona se estiver dentro da água.' },
-      { id: 'C', text: 'Que é uma caixa gigante pesada de madeira.' },
-      { id: 'D', text: 'Que é um jogo de computador antigo.' },
+    "id": 24,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual terminal do transistor bipolar NPN está conectado ao polo negativo comum (GND) no circuito da pulseira?",
+    "options": [
+      {
+        "id": "A",
+        "text": "A Base (Base)."
+      },
+      {
+        "id": "B",
+        "text": "O Coletor (Collector)."
+      },
+      {
+        "id": "C",
+        "text": "O terminal da antena de rádio."
+      },
+      {
+        "id": "D",
+        "text": "O Emissor (Emitter)."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Wearable vem do inglês "vestível", aparelhos eletrônicos que vestimos no corpo.',
-    technicalTip: 'Wearable = dispositivo vestível.',
+    "correctAnswer": "D",
+    "explanation": "Na configuração tradicional de chaveamento low-side NPN, o Emissor vai ao GND, a Base recebe o sinal via resistor e o Coletor liga à carga.",
+    "technicalTip": "Emissor aterrado no GND (chaveamento low-side NPN)."
   },
-  // 25
   {
-    id: 25,
-    category: 'Lógica de Acionamento',
-    question: 'Qual é a sequência certa dos acontecimentos quando alguém chega na casa?',
-    options: [
-      { id: 'A', text: '1º A pessoa aperta o botão -> 2º A campainha manda o sinal sem fio -> 3º A pulseira vibra no braço.' },
-      { id: 'B', text: '1º A pulseira vibra -> 2º A pessoa aperta o botão depois -> 3º O sinal é enviado.' },
-      { id: 'C', text: '1º A bateria descarrega -> 2º O visitante vai embora -> 3º Toca a buzina.' },
-      { id: 'D', text: '1º A campainha toca música -> 2º O visitante pula o muro -> 3º Nada acontece.' },
+    "id": 25,
+    "category": "Eletrônica e Hardware",
+    "question": "Onde está conectado o terminal do Coletor do transistor no receptor do VIBEELL?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Ao polo negativo do motor Vibracall (e ao anodo do diodo flyback)."
+      },
+      {
+        "id": "B",
+        "text": "Diretamente no pino do Push Button do transmissor."
+      },
+      {
+        "id": "C",
+        "text": "No polo positivo da bateria Li-Po sem passar pelo motor."
+      },
+      {
+        "id": "D",
+        "text": "Na porta USB-C de carregamento."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Tudo começa com o dedo apertando o botão, o rádio manda o sinal e a pulseira vibra quase na mesma hora.',
-    technicalTip: 'Fluxo: Botão -> Transmissão -> Vibração.',
+    "correctAnswer": "A",
+    "explanation": "O Coletor fecha a malha de corrente entre o terminal negativo da carga (motor) e o terra (Emissor) quando saturado.",
+    "technicalTip": "Coletor conectado ao terminal negativo do motor Vibracall."
   },
-  // 26
   {
-    id: 26,
-    category: 'Conectividade Wi-Fi',
-    question: 'A campainha precisa que a pessoa esteja com o celular aberto no aplicativo para a pulseira vibrar?',
-    options: [
-      { id: 'A', text: 'Não, as duas plaquinhas conversam diretamente entre si sem precisar do celular aberto.' },
-      { id: 'B', text: 'Sim, o celular precisa estar na mão da pessoa o dia todo tocando alarme.' },
-      { id: 'C', text: 'Sim, é obrigatório ligar para a operadora de telefone a cada toque.' },
-      { id: 'D', text: 'Não, porque a campainha funciona através de cabos de som.' },
+    "id": 26,
+    "category": "Lógica de Acionamento",
+    "question": "Qual é o motivo do motor Vibracall ser acionado em pulsos temporizados (ex: 1 a 2 segundos) em vez de vibrar indefinidamente?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Evitar que a carcaça do transistor atinja 500 graus Celsius em milissegundos."
+      },
+      {
+        "id": "B",
+        "text": "Poupar a carga da bateria Li-Po e oferecer um padrão de alerta tátil confortável sem incômodo excessivo ao usuário."
+      },
+      {
+        "id": "C",
+        "text": "Porque o sinal de Wi-Fi é automaticamente desligado pelo roteador após 2 segundos."
+      },
+      {
+        "id": "D",
+        "text": "Porque a legislação trabalhista proíbe vibrações superiores a 3 segundos."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O sistema é independente: a campainha fala direto com a pulseira pela rede.',
-    technicalTip: 'Funcionamento autônomo entre campainha e pulseira.',
+    "correctAnswer": "B",
+    "explanation": "Um pulso curto bem calibrado é suficiente para percepção imediata do usuário e maximiza a autonomia da bateria Li-Po.",
+    "technicalTip": "Temporização: conforto tátil e economia de bateria."
   },
-  // 27
   {
-    id: 27,
-    category: 'Eletrônica e Hardware',
-    question: 'Por que o cabo USB-C é muito mais fácil de plugar do que os cabos de carregador antigos?',
-    options: [
-      { id: 'A', text: 'Porque ele encaixa de qualquer lado (é reversível) sem perigo de colocar de cabeça para baixo.' },
-      { id: 'B', text: 'Porque ele é feito de ouro maciço.' },
-      { id: 'C', text: 'Porque ele funciona sem encostar no aparelho.' },
-      { id: 'D', text: 'Porque ele tem apenas 1 milímetro de comprimento.' },
+    "id": 27,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual é a tensão nominal de operação da célula de bateria Li-Po utilizada na pulseira receptora?",
+    "options": [
+      {
+        "id": "A",
+        "text": "12,0 V contínuos de bateria veicular."
+      },
+      {
+        "id": "B",
+        "text": "1,5 V igual a uma pilha seca comum de lanterna."
+      },
+      {
+        "id": "C",
+        "text": "3,7 V nominais (atingindo cerca de 4,2 V quando totalmente carregada)."
+      },
+      {
+        "id": "D",
+        "text": "24,0 V de controle industrial."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O conector USB-C é simétrico, pode plugar de qualquer lado sem errar a posição.',
-    technicalTip: 'USB-C reversível.',
+    "correctAnswer": "C",
+    "explanation": "Baterias de polímero de lítio (Li-Po) de 1 célula (1S) possuem tensão nominal de 3,7V e patamar de carga plena em 4,2V.",
+    "technicalTip": "Li-Po 1S: 3.7V nominal e 4.2V em carga máxima."
   },
-  // 28
   {
-    id: 28,
-    category: 'Lógica de Acionamento',
-    question: 'Se a pessoa soltar o botão da campainha bem rápido, a pulseira ainda vai vibrar?',
-    options: [
-      { id: 'A', text: 'Sim, porque assim que detecta o toque, o código da pulseira roda a vibração programada completa.' },
-      { id: 'B', text: 'Não, a pessoa precisa ficar segurando o botão por 1 hora.' },
-      { id: 'C', text: 'Não, o botão só funciona se for apertado duas vezes.' },
-      { id: 'D', text: 'Não, a campainha trava se for um toque rápido.' },
+    "id": 28,
+    "category": "Conectividade Wi-Fi",
+    "question": "O que acontece após o usuário selecionar a sua rede doméstica e digitar a senha na página da rede \"Vibeell\"?",
+    "options": [
+      {
+        "id": "A",
+        "text": "O dispositivo formata o microcontrolador e exige nova gravação de código via computador."
+      },
+      {
+        "id": "B",
+        "text": "O ponto de acesso \"Vibeell\" passa a emitir sinais de rádio Bluetooth para sempre."
+      },
+      {
+        "id": "C",
+        "text": "O motor Vibracall vibra de forma contínua até que a bateria se esgote por completo."
+      },
+      {
+        "id": "D",
+        "text": "O dispositivo armazena as credenciais na memória não volátil, reinicia o Wi-Fi em modo cliente e conecta-se à rede doméstica."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Mesmo um clique rápido é detectado e dispara o pulso de vibração garantido.',
-    technicalTip: 'Detecção imediata de toque.',
+    "correctAnswer": "D",
+    "explanation": "Os dados de SSID e senha são salvos na flash (NVS); o modo Access Point é encerrado e a placa passa a operar conectada à rede local do usuário.",
+    "technicalTip": "Gravação na NVS e transição para modo Station (cliente)."
   },
-  // 29
   {
-    id: 29,
-    category: 'Eletrônica e Hardware',
-    question: 'O que o transistor faz quando o microcontrolador manda sinal nível ALTO (HIGH)?',
-    options: [
-      { id: 'A', text: 'Ele fecha o circuito e liga o motor vibratório.' },
-      { id: 'B', text: 'Ele desliga a pulseira para sempre.' },
-      { id: 'C', text: 'Ele descarrega a bateria toda de propósito.' },
-      { id: 'D', text: 'Ele toca uma música clássica.' },
+    "id": 29,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual elemento protege a bateria Li-Po de atingir tensões perigosas acima de 4,2V durante o carregamento?",
+    "options": [
+      {
+        "id": "A",
+        "text": "O circuito integrado de controle do módulo TP4056, que corta a corrente ao atingir 4,2V."
+      },
+      {
+        "id": "B",
+        "text": "O transistor NPN que desliga o motor Vibracall."
+      },
+      {
+        "id": "C",
+        "text": "O Push Button da campainha externa."
+      },
+      {
+        "id": "D",
+        "text": "O diodo flyback montado no motor."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Sinal ALTO faz o transistor conduzir energia, ligando o motor.',
-    technicalTip: 'HIGH = Transistor conduzindo = Motor LIGADO.',
+    "correctAnswer": "A",
+    "explanation": "O TP4056 monitora continuamente a tensão da célula e encerra a etapa de carga ao atingir 4,2V ± 1%, prevenindo sobretensão perigosa.",
+    "technicalTip": "Corte de tensão a 4.2V pelo TP4056."
   },
-  // 30
   {
-    id: 30,
-    category: 'Eletrônica e Hardware',
-    question: 'E o que o transistor faz quando o microcontrolador manda sinal nível BAIXO (LOW)?',
-    options: [
-      { id: 'A', text: 'Ele abre o circuito e desliga o motor vibratório.' },
-      { id: 'B', text: 'Ele faz o motor tremer com mais força.' },
-      { id: 'C', text: 'Ele apaga o nome dos integrantes do trabalho.' },
-      { id: 'D', text: 'Ele queima a bateria.' },
+    "id": 30,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual é a principal razão pela qual o ESP32-C3 SuperMini foi escolhido em detrimento de placas como o Arduino Uno tradicional?",
+    "options": [
+      {
+        "id": "A",
+        "text": "O Arduino Uno possui dimensões microscópicas que impedem a soldagem manual de fios."
+      },
+      {
+        "id": "B",
+        "text": "Possui Wi-Fi nativo embutido, dimensões reduzidas comparáveis a uma moeda e arquitetura de 32 bits com baixo consumo."
+      },
+      {
+        "id": "C",
+        "text": "O Arduino Uno opera exclusivamente com 220V em corrente alternada."
+      },
+      {
+        "id": "D",
+        "text": "O ESP32-C3 SuperMini não necessita de programação ou software para operar."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Sinal BAIXO corta a passagem de energia, fazendo o motor parar de tremer.',
-    technicalTip: 'LOW = Transistor cortado = Motor DESLIGADO.',
+    "correctAnswer": "B",
+    "explanation": "O ESP32-C3 SuperMini tem menos de 2,5 cm de comprimento, antena integrada e rádio Wi-Fi, perfeito para o case compacto da pulseira e da campainha.",
+    "technicalTip": "Dimensões ultracompactas com Wi-Fi integrado."
   },
-
-  // 31
   {
-    id: 31,
-    category: 'Eletrônica e Hardware',
-    question: 'Quantas partes principais compõem o sistema VIBEELL?',
-    options: [
-      { id: 'A', text: 'Duas partes principais: a campainha que fica na porta (emissor) e a pulseira vestível (receptor).' },
-      { id: 'B', text: 'Dez caixas grandes espalhadas pela rua.' },
-      { id: 'C', text: 'Apenas uma campainha que toca música comum.' },
-      { id: 'D', text: 'Três cabos de alta tensão que ligam a casa ao poste.' },
+    "id": 31,
+    "category": "Lógica de Acionamento",
+    "question": "No transmissor, qual método de software evita que uma única pressão do botão dispare múltiplos pacotes falsos por oscilação mecânica dos contatos?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Aumento da tensão de alimentação da bateria para 50 volts."
+      },
+      {
+        "id": "B",
+        "text": "Inversão dos terminais da antena Wi-Fi."
+      },
+      {
+        "id": "C",
+        "text": "Lógica de Debouncing (temporização ou filtragem de repiques mecânicos)."
+      },
+      {
+        "id": "D",
+        "text": "Troca do transistor NPN por um resistor de carvão."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O sistema tem o módulo da porta (emissor) e a pulseira no braço do morador (receptor).',
-    technicalTip: 'Dois módulos: Emissor (porta) e Receptor (pulseira).',
+    "correctAnswer": "C",
+    "explanation": "Contatos mecânicos vibram por milissegundos antes do fechamento estável. O debounce via código ignora leituras espúrias.",
+    "technicalTip": "Debouncing em botões mecânicos."
   },
-  // 32
   {
-    id: 32,
-    category: 'Acessibilidade',
-    question: 'O projeto VIBEELL ajuda a dar mais o quê para a pessoa com deficiência auditiva?',
-    options: [
-      { id: 'A', text: 'Autonomia e tranquilidade, sabendo que não vai perder entregas ou visitas em sua casa.' },
-      { id: 'B', text: 'Dor de cabeça por carregar aparelhos pesados.' },
-      { id: 'C', text: 'Medo de atender a porta.' },
-      { id: 'D', text: 'Gasto excessivo com pilhas descartáveis todos os dias.' },
+    "id": 32,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual conector moderno é soldado à placa do módulo TP4056 para recarregar a bateria da pulseira?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Conector coaxial de antena de televisão analógica."
+      },
+      {
+        "id": "B",
+        "text": "Plugue estéreo P10 para amplificadores de guitarra."
+      },
+      {
+        "id": "C",
+        "text": "Conector serial DB9 de computadores industriais antigos."
+      },
+      {
+        "id": "D",
+        "text": "Conector USB Tipo C (reversível e padronizado com carregadores de celular atuais)."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O morador fica tranquilo em qualquer cômodo de casa sabendo que o pulso vai tremer se alguém chamar.',
-    technicalTip: 'Autonomia e independência em casa.',
+    "correctAnswer": "D",
+    "explanation": "O USB-C facilita o manuseio pelo usuário final por permitir encaixe simétrico e usar o mesmo carregador de smartphones modernos.",
+    "technicalTip": "Conector USB-C reversível no TP4056."
   },
-  // 33
   {
-    id: 33,
-    category: 'Conectividade Wi-Fi',
-    question: 'O sinal do Wi-Fi de 2.4 GHz consegue atravessar portas e paredes de uma casa?',
-    options: [
-      { id: 'A', text: 'Sim, o sinal atravessa as paredes comuns da casa para a pulseira funcionar nos cômodos.' },
-      { id: 'B', text: 'Não, o sinal para na primeira cortina que encontrar.' },
-      { id: 'C', text: 'Não, só funciona se a pessoa estiver na calçada da rua.' },
-      { id: 'D', text: 'Sim, mas apenas se a parede for de vidro transparente.' },
+    "id": 33,
+    "category": "Conectividade Wi-Fi",
+    "question": "O que o transmissor e o receptor fazem se a rede Wi-Fi residencial configurada sofrer uma queda temporária de energia do roteador?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Ficam tentando se reconectar e, se o roteador não responder após o tempo limite, disponibilizam a rede \"Vibeell\"."
+      },
+      {
+        "id": "B",
+        "text": "Explodem a bateria Li-Po por medida de segurança."
+      },
+      {
+        "id": "C",
+        "text": "Passam a se comunicar por cabos invisíveis de laser térmico."
+      },
+      {
+        "id": "D",
+        "text": "Tocam uma sirene sonora de 120 decibéis no portão."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'As ondas de Wi-Fi de 2.4 GHz contornam e atravessam paredes de alvenaria garantindo cobertura na casa.',
-    technicalTip: 'Alcance do sinal através das paredes.',
+    "correctAnswer": "A",
+    "explanation": "A rotina de contingência do firmware tenta reconectar ciclicamente. Se a ausência persistir, abre o AP \"Vibeell\" para inspeção ou nova rede.",
+    "technicalTip": "Recuperação automática de conexão ou fallback para AP \"Vibeell\"."
   },
-  // 34
   {
-    id: 34,
-    category: 'Eletrônica e Hardware',
-    question: 'O que usamos para segurar e prender a caixinha com o circuito no braço da pessoa?',
-    options: [
-      { id: 'A', text: 'Uma pulseira ajustável com fecho confortável para o pulso.' },
-      { id: 'B', text: 'Fita isolante colada na pele.' },
-      { id: 'C', text: 'Um elástico de dinheiro apertado.' },
-      { id: 'D', text: 'Um grampo de prender roupa.' },
+    "id": 34,
+    "category": "Eletrônica e Hardware",
+    "question": "Por que o transmissor (campainha) NÃO precisa de transistor nem de motor Vibracall em seu circuito?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Porque o transmissor não possui pinos suficientes para conectar esses componentes."
+      },
+      {
+        "id": "B",
+        "text": "Porque sua função é apenas detectar o botão e transmitir dados pelo ar, não havendo necessidade de alerta tátil no transmissor."
+      },
+      {
+        "id": "C",
+        "text": "Porque o Push Button queima sempre que é ligado junto de um transistor."
+      },
+      {
+        "id": "D",
+        "text": "Porque o motor Vibracall bloquearia o sinal de Wi-Fi emitido pela antena."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A caixinha se acopla a uma pulseira com fecho, tornando o uso confortável no dia a dia.',
-    technicalTip: 'Pulseira ergonômica ajustável.',
+    "correctAnswer": "B",
+    "explanation": "O papel da campainha é unicamente sensorial de entrada (detectar o toque) e de envio (Wi-Fi). Quem vibra é o receptor no braço do morador.",
+    "technicalTip": "Separação funcional: Transmissor (input + envio) vs Receptor (recepção + output tátil)."
   },
-  // 35
   {
-    id: 35,
-    category: 'Lógica de Acionamento',
-    question: 'O que chamamos de "tempo de resposta" ou "latência" no VIBEELL?',
-    options: [
-      { id: 'A', text: 'O tempinho muito rápido (menos de 1 segundo) entre apertar o botão e a pulseira começar a vibrar.' },
-      { id: 'B', text: 'O tempo que a bateria demora para estragar.' },
-      { id: 'C', text: 'O tempo que o carteiro espera no portão.' },
-      { id: 'D', text: 'O tempo que demora para ligar a TV.' },
+    "id": 35,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual é a função do pino \"Base\" do transistor no receptor em comparação com o \"Coletor\" e o \"Emissor\"?",
+    "options": [
+      {
+        "id": "A",
+        "text": "A Base é o polo negativo que recebe a corrente da bateria e a joga no motor."
+      },
+      {
+        "id": "B",
+        "text": "A Base é o terminal onde o cabo USB-C se conecta fisicamente para carregar o chip."
+      },
+      {
+        "id": "C",
+        "text": "A Base é o terminal de controle que recebe a corrente do pino para regular/permitir a passagem maior entre Coletor e Emissor."
+      },
+      {
+        "id": "D",
+        "text": "A Base serve apenas como carcaça plástica de fixação mecânica sem contato elétrico."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Latência é o tempo que o sinal demora para chegar. No VIBEELL é quase instantâneo.',
-    technicalTip: 'Resposta quase instantânea (<1 segundo).',
+    "correctAnswer": "C",
+    "explanation": "Em transistores BJT NPN, uma pequena corrente de Base polariza a junção, liberando uma corrente muito maior entre Coletor e Emissor.",
+    "technicalTip": "Base: terminal de controle de corrente."
   },
-  // 36
   {
-    id: 36,
-    category: 'Eletrônica e Hardware',
-    question: 'A bateria da pulseira é recarregável ou precisa comprar pilha nova quando acabar?',
-    options: [
-      { id: 'A', text: 'É 100% recarregável, basta colocar no carregador USB como se fosse um celular.' },
-      { id: 'B', text: 'É descartável e precisa jogar fora todo dia.' },
-      { id: 'C', text: 'Não usa bateria, funciona com vento.' },
-      { id: 'D', text: 'Usa querosene para gerar energia.' },
+    "id": 36,
+    "category": "Lógica de Acionamento",
+    "question": "Em um cenário onde o visitante dá 5 toques rápidos seguidos no Push Button da campainha, qual é o comportamento esperado do receptor?",
+    "options": [
+      {
+        "id": "A",
+        "text": "O receptor trava e precisa ter sua bateria desconectada manualmente."
+      },
+      {
+        "id": "B",
+        "text": "O motor começa a girar com rotação 5 vezes maior até queimar o enrolamento."
+      },
+      {
+        "id": "C",
+        "text": "A campainha apaga a senha do Wi-Fi e cria a rede \"Vibeell\" novamente."
+      },
+      {
+        "id": "D",
+        "text": "Garante o envio e a execução estável do pulso de vibração para avisar o morador sem sobrecarregar o microcontrolador."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A bateria Li-Po pode ser recarregada centenas de vezes pelo conector USB.',
-    technicalTip: 'Ecológica e econômica: bateria recarregável.',
+    "correctAnswer": "D",
+    "explanation": "O tratamento de estados do código absorve os disparos repetidos garantindo que a vibração cumpra o alerta sem travar a máquina de estados.",
+    "technicalTip": "Controle de fluxo de alertas no receptor."
   },
-  // 37
   {
-    id: 37,
-    category: 'Eletrônica e Hardware',
-    question: 'Qual é o nome da pecinha de três perninhas que atua como chave para o motor?',
-    options: [
-      { id: 'A', text: 'Transistor.' },
-      { id: 'B', text: 'Transformador de poste.' },
-      { id: 'C', text: 'Fita adesiva.' },
-      { id: 'D', text: 'Alto-falante.' },
+    "id": 37,
+    "category": "Eletrônica e Hardware",
+    "question": "Por que o conjunto Resistor + Transistor + Diodo é chamado tecnicamente de \"Driver do Motor\"?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Porque formam um circuito intermediário de interface e proteção que capacita um sinal fraco do microcontrolador a acionar uma carga pesada."
+      },
+      {
+        "id": "B",
+        "text": "Porque é um aplicativo de computador que precisa ser baixado na internet para o motor funcionar."
+      },
+      {
+        "id": "C",
+        "text": "Porque dirige a velocidade de conexão Wi-Fi entre o transmissor e o roteador."
+      },
+      {
+        "id": "D",
+        "text": "Porque substitui o papel da bateria fornecendo energia sem fio."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O transistor é o componente semicondutor com 3 perninhas que controla correntes maiores.',
-    technicalTip: 'Transistor (3 pernas: Base, Coletor, Emissor).',
+    "correctAnswer": "A",
+    "explanation": "Na eletrônica, um \"driver\" é o circuito de condicionamento e potência que permite a uma saída digital de controle comandar atuadores elétricos.",
+    "technicalTip": "Driver de potência: acionamento e proteção de atuadores."
   },
-  // 38
   {
-    id: 38,
-    category: 'Eletrônica e Hardware',
-    question: 'Qual é o nome do pino de "terra" ou pólo negativo que existe nos circuitos eletrônicos?',
-    options: [
-      { id: 'A', text: 'GND (Ground).' },
-      { id: 'B', text: 'VCC de 220V.' },
-      { id: 'C', text: 'Pino de Wi-Fi.' },
-      { id: 'D', text: 'USB Turbo.' },
+    "id": 38,
+    "category": "Projeto ETERJ",
+    "question": "Em qual instituição técnica e turma o projeto VIBEELL foi desenvolvido e apresentado?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Centro Federal de Educação Tecnológica (CEFET), Turma 4101."
+      },
+      {
+        "id": "B",
+        "text": "Escola Técnica do Rio de Janeiro (ETERJ), Turma 1121."
+      },
+      {
+        "id": "C",
+        "text": "Instituto Federal do Rio de Janeiro (IFRJ), Turma 2002."
+      },
+      {
+        "id": "D",
+        "text": "Escola Politécnica da UFRJ, Turma de Pós-Graduação."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'GND é a sigla em inglês de Ground (Terra / polo negativo comum do circuito).',
-    technicalTip: 'GND = pólo negativo / terra comum.',
+    "correctAnswer": "B",
+    "explanation": "O projeto VIBEELL é autoria dos estudantes do 1º ano da turma 1121 da ETERJ.",
+    "technicalTip": "ETERJ - Turma 1121."
   },
-  // 39
   {
-    id: 39,
-    category: 'Conectividade Wi-Fi',
-    question: 'O que acontece se a internet da rua cair, mas o roteador dentro de casa continuar ligado?',
-    options: [
-      { id: 'A', text: 'A campainha continua funcionando normalmente, pois ela usa a rede local sem fio da casa.' },
-      { id: 'B', text: 'A pulseira explode imediatamente.' },
-      { id: 'C', text: 'O botão para de funcionar para sempre.' },
-      { id: 'D', text: 'A campainha passa a funcionar com pilhas de relógio.' },
+    "id": 39,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual é o comportamento dos LEDs sinalizadores do módulo TP4056 ao plugar o cabo de alimentação na pulseira?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Ambos os LEDs piscam em amarelo indicando que o motor Vibracall está ligado."
+      },
+      {
+        "id": "B",
+        "text": "O LED azul indica que o Push Button foi pressionado no transmissor."
+      },
+      {
+        "id": "C",
+        "text": "O LED vermelho acende durante o processo de carga da bateria e o LED azul/verde acende quando a carga atinge 100% (4,2V)."
+      },
+      {
+        "id": "D",
+        "text": "Os LEDs servem apenas como iluminação estética sem indicar status elétrico."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A comunicação é local entre os dois aparelhos na mesma rede, não depende de sites da internet estarem funcionando.',
-    technicalTip: 'Comunicação local independente da internet externa.',
+    "correctAnswer": "C",
+    "explanation": "Os pinos CHRG e STDBY acionam respectivamente o LED vermelho (carregando) e o LED azul/verde (carga completa).",
+    "technicalTip": "LED Vermelho (carga em andamento) vs LED Azul/Verde (plena carga)."
   },
-  // 40
   {
-    id: 40,
-    category: 'Eletrônica e Hardware',
-    question: 'Qual é o principal perigo de ligar fios direto sem resistor ou sem proteção em uma plaquinha?',
-    options: [
-      { id: 'A', text: 'Causar um curto-circuito e queimar os pinos da placa.' },
-      { id: 'B', text: 'Fazer o quarto ficar muito frio.' },
-      { id: 'C', text: 'Fazer o botão virar um rádio de pilha.' },
-      { id: 'D', text: 'Nenhum perigo, pode ligar de qualquer jeito sem resistor.' },
+    "id": 40,
+    "category": "Acessibilidade",
+    "question": "Por que o projeto VIBEELL é classificado como uma Tecnologia Assistiva?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Porque é um software corporativo para gestão financeira de escolas técnicas."
+      },
+      {
+        "id": "B",
+        "text": "Porque serve unicamente como dispositivo de entretenimento e jogos eletrônicos."
+      },
+      {
+        "id": "C",
+        "text": "Porque substitui completamente os tratamentos médicos auditivos do usuário."
+      },
+      {
+        "id": "D",
+        "text": "Porque utiliza recursos eletrônicos e de telecomunicações para proporcionar autonomia, segurança e acessibilidade a deficientes auditivos."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Ligar direto sem resistor passa corrente demais e pode queimar a plaquinha de vez.',
-    technicalTip: 'Proteção contra curto e sobrecorrente.',
+    "correctAnswer": "D",
+    "explanation": "Tecnologias Assistivas são instrumentos criados para promover a funcionalidade, autonomia e participação social de pessoas com deficiência.",
+    "technicalTip": "Tecnologia Assistiva e inclusão de PCD."
   },
-
-  // 41
   {
-    id: 41,
-    category: 'Lógica de Acionamento',
-    question: 'Por que o motor para de vibrar depois de 1 ou 2 segundos?',
-    options: [
-      { id: 'A', text: 'Porque o programa da plaquinha manda desligar para não machucar o pulso nem gastar a bateria à toa.' },
-      { id: 'B', text: 'Porque o motor queima toda vez que liga.' },
-      { id: 'C', text: 'Porque a pessoa precisa bater na pulseira para ela parar.' },
-      { id: 'D', text: 'Porque o visitante foi embora.' },
+    "id": 41,
+    "category": "Eletrônica e Hardware",
+    "question": "O que aconteceria se a bateria Li-Po 3,7V fosse ligada com a polaridade invertida (positivo no GND e negativo no positivo) no módulo da pulseira?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Provocaria queima imediata dos circuitos integrados do ESP32-C3 SuperMini e do módulo TP4056 por curto-circuito reverso."
+      },
+      {
+        "id": "B",
+        "text": "A pulseira apenas vibraria no sentido oposto sem nenhum risco de queima."
+      },
+      {
+        "id": "C",
+        "text": "O conector USB-C passaria a gerar 110V de corrente alternada."
+      },
+      {
+        "id": "D",
+        "text": "A rede Wi-Fi \"Vibeell\" mudaria o nome automaticamente para \"Vibeell_Reverso\"."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O código programa um tempinho ideal de aviso e depois desliga o motor automaticamente.',
-    technicalTip: 'Temporizador automático de desligamento.',
+    "correctAnswer": "A",
+    "explanation": "Inversão de polaridade em circuitos de corrente contínua destrói as junções de semicondutores não protegidos por ponte de diodos.",
+    "technicalTip": "Inversão de polaridade destrói semicondutores de corrente contínua."
   },
-  // 42
   {
-    id: 42,
-    category: 'Eletrônica e Hardware',
-    question: 'Para unir os fios e as pecinhas na montagem do protótipo, qual ferramenta é usada?',
-    options: [
-      { id: 'A', text: 'Ferro de solda com estanho (ou fios em protoboard).' },
-      { id: 'B', text: 'Grampeador de papel.' },
-      { id: 'C', text: 'Cola bastão escolar.' },
-      { id: 'D', text: 'Fio dental.' },
+    "id": 42,
+    "category": "Conectividade Wi-Fi",
+    "question": "Qual é o papel da rede Wi-Fi \"Vibeell\" em comparação com a rede Wi-Fi doméstica do usuário?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Vibeell\" é a rede principal que precisa ser mantida ligada no computador para a campainha funcionar."
+      },
+      {
+        "id": "B",
+        "text": "\"Vibeell\" é uma rede de contingência/configuração temporária; a rede doméstica é onde a campainha e a pulseira se comunicam no dia a dia."
+      },
+      {
+        "id": "C",
+        "text": "Não há diferença; o transmissor só aceita a rede \"Vibeell\" e nunca se conecta à rede doméstica."
+      },
+      {
+        "id": "D",
+        "text": "\"Vibeell\" é uma conexão via satélite de uso militar exclusivo."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A solda eletrônica com estanho prende as pecinhas e garante que a eletricidade passe sem soltar com o tremor.',
-    technicalTip: 'Solda com estanho garante bom contato elétrico.',
+    "correctAnswer": "B",
+    "explanation": "A rede \"Vibeell\" atua como ponte provisória para receber a configuração. No cotidiano, ambos operam na rede local residencial do usuário.",
+    "technicalTip": "Rede de configuração temporária (AP) vs Rede de operação (LAN)."
   },
-  // 43
   {
-    id: 43,
-    category: 'Acessibilidade',
-    question: 'Quem se beneficia diretamente com o projeto VIBEELL?',
-    options: [
-      { id: 'A', text: 'Pessoas com deficiência auditiva (surdos) e pessoas idosas com dificuldade para escutar a campainha.' },
-      { id: 'B', text: 'Apenas motoristas de ônibus no trânsito.' },
-      { id: 'C', text: 'Pilotos de avião durante voos internacionais.' },
-      { id: 'D', text: 'Astronautas no espaço sideral.' },
+    "id": 43,
+    "category": "Lógica de Acionamento",
+    "question": "Em que nível de latência (tempo de resposta) a comunicação em rede local entre os dois ESP32-C3 opera tipicamente?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Latência fixa obrigatória de 45 a 60 minutos entre o toque e a vibração."
+      },
+      {
+        "id": "B",
+        "text": "Mais de 24 horas, pois os dados precisam ser validados em um cartório digital."
+      },
+      {
+        "id": "C",
+        "text": "Latência na faixa de dezenas de milissegundos (praticamente imperceptível ao usuário humano)."
+      },
+      {
+        "id": "D",
+        "text": "Exatamente zero segundos, pois as ondas de rádio viajam no tempo para o passado."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Ajuda qualquer pessoa que não consiga escutar a campainha comum, trazendo acessibilidade e conforto.',
-    technicalTip: 'Inclusão de pessoas com perda auditiva e idosos.',
+    "correctAnswer": "C",
+    "explanation": "Trocas de pacotes UDP/TCP em redes locais Wi-Fi 802.11 ocorrem em milissegundos, disparando a vibração de forma quase instantânea.",
+    "technicalTip": "Baixa latência em rede local (<100ms)."
   },
-  // 44
   {
-    id: 44,
-    category: 'Eletrônica e Hardware',
-    question: 'Por que a plaquinha ESP32 da campainha e a ESP32-C3 da pulseira são da mesma "família"?',
-    options: [
-      { id: 'A', text: 'Porque ambas são microcontroladores modernos com Wi-Fi fabricados pela empresa Espressif.' },
-      { id: 'B', text: 'Porque foram inventadas no mesmo dia pelo mesmo aluno da sala.' },
-      { id: 'C', text: 'Porque uma é o carregador da outra.' },
-      { id: 'D', text: 'Porque ambas funcionam com pilha AA comum.' },
+    "id": 44,
+    "category": "Eletrônica e Hardware",
+    "question": "Por que a carcaça da pulseira deve manter o Motor Vibracall firmemente apoiado contra a face interna do dispositivo?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Para evitar que o motor respire o oxigênio do ambiente e oxide a carcaça."
+      },
+      {
+        "id": "B",
+        "text": "Para resfriar o pino de terra (GND) da bateria Li-Po."
+      },
+      {
+        "id": "C",
+        "text": "Para não deixar a luz da tela vazar para o exterior."
+      },
+      {
+        "id": "D",
+        "text": "Para maximizar a transferência da energia mecânica de vibração diretamente para o tecido da pele do pulso."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Fazem parte da família ESP32, famosa por ter processador rápido e Wi-Fi integrado a baixo custo.',
-    technicalTip: 'Família ESP32 (Espressif).',
+    "correctAnswer": "D",
+    "explanation": "A eficácia da estimulação tátil depende do contato mecânico direto; folgas atenuam a amplitude da vibração percebida na pele.",
+    "technicalTip": "Acoplamento mecânico direto para máxima percepção tátil."
   },
-  // 45
   {
-    id: 45,
-    category: 'Lógica de Acionamento',
-    question: 'Em qual parte do código do microcontrolador colocamos as ordens que ficam repetindo e vigiando o botão?',
-    options: [
-      { id: 'A', text: 'Na função loop().' },
-      { id: 'B', text: 'Na função setup() que só roda uma vez quando liga.' },
-      { id: 'C', text: 'Na bateria do circuito.' },
-      { id: 'D', text: 'No cabo USB.' },
+    "id": 45,
+    "category": "Conectividade Wi-Fi",
+    "question": "Por que o ESP32-C3 SuperMini do transmissor também possui a capacidade de criar a rede \"Vibeell\"?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Porque ele também precisa ser configurado para se conectar à mesma rede Wi-Fi da casa caso a rede mude."
+      },
+      {
+        "id": "B",
+        "text": "Para tocar músicas natalinas no portão durante o inverno."
+      },
+      {
+        "id": "C",
+        "text": "Apenas para gastar a memória flash restante do microcontrolador."
+      },
+      {
+        "id": "D",
+        "text": "O transmissor não cria essa rede, apenas a pulseira receptora a cria."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A função loop() roda sem parar em círculo enquanto o aparelho estiver ligado.',
-    technicalTip: 'loop() = repetição contínua.',
+    "correctAnswer": "A",
+    "explanation": "Tanto o transmissor quanto o receptor operam com o mesmo princípio de conectividade: se perderem a rede, precisam do portal para reconfiguração.",
+    "technicalTip": "Capacidade de configuração presente em ambas as pontas do sistema."
   },
-  // 46
   {
-    id: 46,
-    category: 'Eletrônica e Hardware',
-    question: 'O que o botão "Push Button" tem por dentro para voltar à posição original quando soltamos o dedo?',
-    options: [
-      { id: 'A', text: 'Uma molinha metálica que empurra o botão de volta para cima.' },
-      { id: 'B', text: 'Um ímã de geladeira.' },
-      { id: 'C', text: 'Ar comprimido de pneu.' },
-      { id: 'D', text: 'Um elástico de tecido.' },
+    "id": 46,
+    "category": "Eletrônica e Hardware",
+    "question": "Qual grandeza elétrica é expressa em \"Ohms\" (Ω) no circuito de acionamento do VIBEELL e qual componente a representa?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Capacidade de carga, representada pela Bateria Li-Po."
+      },
+      {
+        "id": "B",
+        "text": "Resistência elétrica, representada pelo Resistor de polarização de base."
+      },
+      {
+        "id": "C",
+        "text": "Frequência de rádio, representada pela antena do ESP32-C3."
+      },
+      {
+        "id": "D",
+        "text": "Rotação mecânica por minuto, representada pelo motor Vibracall."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A molinha interna faz o botão ser "momentâneo", retornando assim que você tira o dedo.',
-    technicalTip: 'Mola de retorno do Push Button.',
+    "correctAnswer": "B",
+    "explanation": "A unidade Ohm (Ω) mede a oposição à passagem da corrente elétrica, exercida pelo resistor de base.",
+    "technicalTip": "Resistência elétrica em Ohms (Ω) = Resistor."
   },
-  // 47
   {
-    id: 47,
-    category: 'Conectividade Wi-Fi',
-    question: 'Qual é a maior vantagem do VIBEELL usar Wi-Fi em vez de fios espalhados pela casa?',
-    options: [
-      { id: 'A', text: 'Não precisa furar paredes nem passar metros de fios feios pela casa toda.' },
-      { id: 'B', text: 'Gasta o dobro da eletricidade.' },
-      { id: 'C', text: 'Obriga a quebrar o piso da cozinha.' },
-      { id: 'D', text: 'Faz a campainha funcionar apenas quando estiver sol.' },
+    "id": 47,
+    "category": "Projeto ETERJ",
+    "question": "Quem orientou cientificamente e tecnicamente os alunos da turma 1121 no desenvolvimento do VIBEELL?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Professor Alberto Santos Dumont."
+      },
+      {
+        "id": "B",
+        "text": "Professora Ada Lovelace."
+      },
+      {
+        "id": "C",
+        "text": "Professora Orientadora Tacila Vanessa."
+      },
+      {
+        "id": "D",
+        "text": "Professora Marie Curie."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'A instalação sem fio é limpa, fácil e a pulseira pode se mover livremente por todos os cômodos.',
-    technicalTip: 'Sem fios: instalação limpa e livre movimentação.',
+    "correctAnswer": "C",
+    "explanation": "A professora Tacila Vanessa foi a orientadora responsável pelo projeto na ETERJ.",
+    "technicalTip": "Orientadora: Professora Tacila Vanessa."
   },
-  // 48
   {
-    id: 48,
-    category: 'Projeto ETERJ',
-    question: 'Qual evento da ETERJ foi o palco da apresentação deste projeto de ciências?',
-    options: [
-      { id: 'A', text: 'XL Feira de Ciências e de Informação Profissional da ETERJ.' },
-      { id: 'B', text: 'Campeonato de Futebol do Rio de Janeiro.' },
-      { id: 'C', text: 'Show de Talentos Musicais.' },
-      { id: 'D', text: 'Festa Junina do Bairro.' },
+    "id": 48,
+    "category": "Lógica de Acionamento",
+    "question": "Qual é o papel da programação gravada na memória flash dos microcontroladores ESP32-C3 do VIBEELL?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Apenas exibir um contador de visitas em um monitor externo ligado por cabo HDMI."
+      },
+      {
+        "id": "B",
+        "text": "Armazenar arquivos pesados de música para o usuário ouvir no fone de ouvido."
+      },
+      {
+        "id": "C",
+        "text": "Calcular a órbita de satélites meteorológicos em tempo real."
+      },
+      {
+        "id": "D",
+        "text": "Executar o controle de rede, gerenciar o portal cativo, monitorar o botão no transmissor e acionar o driver do motor no receptor."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'O VIBEELL foi desenvolvido para ser apresentado na Feira de Ciências e Informação Profissional da ETERJ.',
-    technicalTip: 'XL Feira de Ciências da ETERJ.',
+    "correctAnswer": "D",
+    "explanation": "O firmware controla toda a lógica do produto: rede, leitura de pinos, protocolos de comunicação e temporizações de acionamento.",
+    "technicalTip": "Firmware: inteligência e controle de hardware do projeto."
   },
-  // 49
   {
-    id: 49,
-    category: 'Eletrônica e Hardware',
-    question: 'O motor vibratório faz barulho alto de campainha ou apenas vibra silenciosamente?',
-    options: [
-      { id: 'A', text: 'Apenas vibra silenciosamente no pulso, sem fazer barulhos estridentes que incomodam.' },
-      { id: 'B', text: 'Toca um som de corneta de 150 decibéis.' },
-      { id: 'C', text: 'Grita o nome da pessoa que está chamando.' },
-      { id: 'D', text: 'Solta fogos de artifício.' },
+    "id": 49,
+    "category": "Eletrônica e Hardware",
+    "question": "Como se dá a passagem de corrente elétrica no circuito receptor quando o transistor NPN satura?",
+    "options": [
+      {
+        "id": "A",
+        "text": "A corrente sai do polo positivo da bateria, atravessa o motor Vibracall, entra pelo Coletor do transistor e sai pelo Emissor até o GND."
+      },
+      {
+        "id": "B",
+        "text": "A corrente sai do GND, passa pelo Diodo, entra no Push Button e volta para a tomada da casa."
+      },
+      {
+        "id": "C",
+        "text": "A corrente sai da antena Wi-Fi, atravessa o resistor e descarrega no ar."
+      },
+      {
+        "id": "D",
+        "text": "A corrente flui em círculo exclusivamente dentro do módulo TP4056 sem chegar ao motor."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'É um aviso tátil e silencioso, evitando barulho na casa e garantindo discrição e conforto.',
-    technicalTip: 'Aviso silencioso e tátil.',
+    "correctAnswer": "A",
+    "explanation": "O circuito fecha do VCC da bateria -> motor -> Coletor -> Emissor -> GND, energizando o motor.",
+    "technicalTip": "Malha de condução: Bateria (+) -> Motor -> Coletor -> Emissor -> GND."
   },
-  // 50
   {
-    id: 50,
-    category: 'Lógica de Acionamento',
-    question: 'Resumindo tudo em uma frase simples: O que é o VIBEELL?',
-    options: [
-      { id: 'A', text: 'É uma campainha inteligente que, em vez de fazer barulho, avisa pelo Wi-Fi fazendo uma pulseira vibrar no braço do surdo.' },
-      { id: 'B', text: 'É um carrinho de controle remoto movido a pilhas.' },
-      { id: 'C', text: 'É um videogame novo para jogar na sala de aula.' },
-      { id: 'D', text: 'É uma lâmpada que muda de cor com música.' },
+    "id": 50,
+    "category": "Lógica de Acionamento",
+    "question": "Considerando a arquitetura completa do projeto VIBEELL, qual afirmação sintetiza com rigor técnico o seu funcionamento?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Dois Arduinos Uno comunicam-se por cabos blindados; o botão aciona diretamente um motor Vibracall de 220V sem auxílio de transistores, usando pilhas alcalinas descartáveis e rede Bluetooth estática."
+      },
+      {
+        "id": "B",
+        "text": "Dois ESP32-C3 SuperMini comunicam-se via Wi-Fi; ao pressionar o botão da campainha, a pulseira satura um transistor que aciona um motor Vibracall com diodo flyback, alimentado por bateria Li-Po com carga via TP4056, permitindo reconfiguração pela rede \"Vibeell\"."
+      },
+      {
+        "id": "C",
+        "text": "Um único ESP32 centralizado controla uma sirene de 100 dB na porta e lâmpadas piscantes nos quartos, sem utilizar componentes vestíveis ou motores mecânicos."
+      },
+      {
+        "id": "D",
+        "text": "O transmissor envia sinais por rádio AM analógico para uma pulseira sem microcontrolador que funciona exclusivamente com energia solar direta."
+      }
     ],
-    correctAnswer: 'A',
-    explanation: 'Essa é a definição exata do projeto de acessibilidade criado pela Turma 1121 da ETERJ!',
-    technicalTip: 'VIBEELL: Campainha inteligente e acessível por pulseira vibratória.',
-  },
+    "correctAnswer": "B",
+    "explanation": "Essa descrição abrange todos os pilares do VIBEELL: os 2 ESP32-C3 SuperMini, push button, transistor + diodo flyback + motor vibracall, bateria Li-Po + TP4056 USB-C, rede Wi-Fi e rede configurável \"Vibeell\".",
+    "technicalTip": "Síntese arquitetural completa do projeto VIBEELL."
+  }
 ];
